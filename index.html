@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mobiz-Advanced-Gender-And-Age-Prediction-Tool</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-image: url('https://source.unsplash.com/1600x900/?landscape');
+			background-size: cover;
+			background-position: center;
+		}
+
+		.container {
+			width: 400px;
+			border-radius: 5px;
+			background: rgba(255, 255, 255, 0.8);
+			backdrop-filter: blur(10px);
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			text-align: center;
+            box-sizing: border-box;
+            border: lightgray solid 1px;
+		}
+
+		.input-box {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: lightgray solid 10px;
+			border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+		}
+
+		.result-box {
+			margin-top: 20px;
+			text-align: center;
+		}
+
+		.name {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.details {
+			font-size: 18px;
+		}
+        
+        #genderMeter, .name {
+        	text-transform: capitalize;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<input class="input-box" id="demo" value="Joe" onchange="guess(this.value);" placeholder="Enter your name">
+		<div class="result-box">
+			<h2 class="name" id="name"></h2>
+			<p class="details">
+				<span id="genderMeter"></span>,
+				<span id="ageMeter"></span>
+			</p>
+		</div>
+	</div>
+
+	<script>
+		async function guess(value) {
+			let fetchedAge = await fetch('https://api.agify.io/?name=' + value);
+			let age = await fetchedAge.json();
+			let fetchedGender = await fetch('https://api.genderize.io/?name=' + value);
+			let gender = await fetchedGender.json();
+
+			document.getElementById("ageMeter").innerText = age.age || " please try another name!";
+			document.getElementById("genderMeter").innerText = gender.gender || "error";
+			document.getElementById("name").innerText = value;
+		};
+
+		guess("Joe");
+	</script>
+</body>
+</html>
